@@ -1,6 +1,23 @@
-@HotelBooking_HostAddress = http://localhost:5048
+@HotelBooking_HostAddress = https://localhost:7065
 
-GET {{HotelBooking_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{HotelBooking_HostAddress}}/rooms
+Content-Type: application/json
+
+{
+  "number": 101,
+  "type": "standard",
+  "capacity": 2,
+  "price": 50
+}
 
 ###
+
+PUT {{HotelBooking_HostAddress}}/rooms/2
+Content-Type: application/json
+
+{
+  "number": 254,
+  "type": "lux",
+  "capacity":5,
+  "price": 450
+}
