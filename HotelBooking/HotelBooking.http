@@ -4,10 +4,10 @@ POST {{HotelBooking_HostAddress}}/rooms
 Content-Type: application/json
 
 {
-  "number": 101,
+  "number": 46,
   "type": "standard",
-  "capacity": 2,
-  "price": 50
+  "capacity": 3,
+  "price": 70
 }
 
 ###
@@ -21,3 +21,37 @@ Content-Type: application/json
   "capacity":5,
   "price": 450
 }
+
+###
+
+DELETE {{HotelBooking_HostAddress}}/rooms/2
+
+###
+
+POST {{HotelBooking_HostAddress}}/bookings
+Content-Type: application/json
+
+{
+  "guestName": "Tom",
+  "checkIn": "2026-10-01",
+  "checkOut": "2026-10-05",
+  "paymentMethod": "card",
+  "roomId": 4
+}
+
+###
+
+PUT {{HotelBooking_HostAddress}}/bookings/1
+Content-Type: application/json
+
+{
+  "guestName": "Anna",
+  "checkIn": "2026-10-03",
+  "checkOut": "2026-10-07",
+  "paymentMethod": "cash",
+  "roomId": 3
+}
+
+###
+
+DELETE {{HotelBooking_HostAddress}}/bookings/1
