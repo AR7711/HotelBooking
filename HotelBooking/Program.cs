@@ -1,4 +1,5 @@
 using HotelBooking.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,63 +14,57 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.MapGet("/rooms", (HotelContext db) => db.rooms.ToList());
-app.MapGet("/bookings", (HotelContext db) => db.bookings.ToList());
 
-app.MapPost("/rooms", (Room room, HotelContext db) =>
-{
-    db.rooms.Add(room);
-    db.SaveChanges();
-    return room;
-});
+app.MapGet("/rooms", async (HotelContext db) => await db.rooms.ToListAsync());
+app.MapGet("/bookings", async (HotelContext db) => await db.bookings.ToListAsync());
 
-app.MapGet("/rooms/{id:int}", (int id, HotelContext db) =>
+app.MapGet("/rooms/{id:int}", async (int id, HotelContext db) =>
 {
-    var result = db.rooms.Find(id);
+    var result = await db.rooms.FindAsync(id);
     if(result == null)
     {
-        return Results.NotFound();
+        return Results.NotFound(new {message = $"Room {id} was not found"});
     }
     return Results.Ok(result);
 });
-app.MapPut("/rooms/{id:int}", (int id, Room room, HotelContext db) =>
+
+app.MapPost("/rooms", async (Room room, HotelContext db) =>
 {
-    var result = db.rooms.Find(id);
+    db.rooms.Add(room);
+    await db.SaveChangesAsync();
+    return room;
+});
+
+app.MapPut("/rooms/{id:int}", async (int id, Room room, HotelContext db) =>
+{
+   var result = await db.rooms.FindAsync(id);
     if(result == null)
     {
-        return Results.NotFound();
+        return Results.NotFound(new { message = $"Room {id} was not found" });
     }
     result.Number = room.Number;
     result.Type = room.Type;
     result.Capacity = room.Capacity;
     result.Price = room.Price;
-
-    db.SaveChanges();
+    await db.SaveChangesAsync();
     return Results.Ok(result);
 });
 
-app.MapDelete("/rooms/{id:int}", (int id, HotelContext db) =>
+app.MapDelete("/rooms/{id:int}", async (int id, HotelContext db) =>
 {
-    var result = db.rooms.Find(id);
+    var result = await db.rooms.FindAsync(id);
     if(result == null)
     {
-        return Results.NotFound(new {message = $"Room {id} was not found"});
+        return Results.NotFound(new {message = $"Room {id} was not found" });
     }
-    db.Remove(result);
-    db.SaveChanges();
+    db.rooms.Remove(result);
+    await db.SaveChangesAsync();
     return Results.Ok(result);
 });
 
-app.MapPost("/bookings", (Booking booking, HotelContext db) =>
+app.MapGet("/bookings/{id:int}", async (int id, HotelContext db) =>
 {
-    db.bookings.Add(booking);
-    db.SaveChanges();
-    return booking;
-});
-
-app.MapGet("/bookings/{id:int}", (int id, HotelContext db) =>
-{
-    var result = db.bookings.Find(id);
+    var result = await db.bookings.FindAsync(id);
     if(result == null)
     {
         return Results.NotFound(new { message = $"Booking {id} was not found" });
@@ -77,12 +72,19 @@ app.MapGet("/bookings/{id:int}", (int id, HotelContext db) =>
     return Results.Ok(result);
 });
 
-app.MapPut("/bookings/{id:int}", (int id, Booking booking, HotelContext db) =>
+app.MapPost("/bookings", async (Booking booking, HotelContext db) =>
 {
-    var result = db.bookings.Find(id);
+    db.bookings.Add(booking);
+    await db.SaveChangesAsync();
+    return booking;
+});
+
+app.MapPut("/bookings/{id:int}", async (int id, Booking booking, HotelContext db) =>
+{
+    var result = await db.bookings.FindAsync(id);
     if(result == null)
     {
-        return Results.NotFound();
+        return Results.NotFound(new { message = $"Booking {id} was not found" });
     }
     result.GuestName = booking.GuestName;
     result.CheckIn = booking.CheckIn;
@@ -90,19 +92,19 @@ app.MapPut("/bookings/{id:int}", (int id, Booking booking, HotelContext db) =>
     result.PaymentMethod = booking.PaymentMethod;
     result.RoomId = booking.RoomId;
 
-    db.SaveChanges();
+    await db.SaveChangesAsync();
     return Results.Ok(result);
 });
 
-app.MapDelete("/bookings/{id:int}", (int id, HotelContext db) =>
+app.MapDelete("/bookings/{id:int}", async (int id, HotelContext db) =>
 {
-    var result = db.bookings.Find(id);
-    if( result == null)
+    var result = await db.bookings.FindAsync(id);
+    if(result == null)
     {
-        return Results.NotFound();
+        return Results.NotFound(new { message = $"Booking {id} was not found" });
     }
     db.bookings.Remove(result);
-    db.SaveChanges();
+    await db.SaveChangesAsync();
     return Results.Ok(result);
 });
 app.Run();
