@@ -4,15 +4,15 @@ POST {{HotelBooking_HostAddress}}/rooms
 Content-Type: application/json
 
 {
-  "number": 46,
+  "number": 14,
   "type": "standard",
-  "capacity": 3,
-  "price": 70
+  "capacity": 2,
+  "price": 60
 }
 
 ###
 
-PUT {{HotelBooking_HostAddress}}/rooms/1
+PUT {{HotelBooking_HostAddress}}/rooms/2
 Content-Type: application/json
 
 {
@@ -24,7 +24,7 @@ Content-Type: application/json
 
 ###
 
-DELETE {{HotelBooking_HostAddress}}/rooms/1
+DELETE {{HotelBooking_HostAddress}}/rooms/3
 
 ###
 
@@ -54,4 +54,4 @@ Content-Type: application/json
 
 ###
 
-DELETE {{HotelBooking_HostAddress}}/bookings/1
+DELETE {{HotelBooking_HostAddress}}/bookings/8
