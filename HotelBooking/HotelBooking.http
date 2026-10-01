@@ -41,7 +41,7 @@ Content-Type: application/json
 
 ###
 
-PUT {{HotelBooking_HostAddress}}/bookings/5
+PUT {{HotelBooking_HostAddress}}/bookings/9
 Content-Type: application/json
 
 {
