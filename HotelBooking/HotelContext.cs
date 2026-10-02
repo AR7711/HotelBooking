@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelBooking.Models
 {
@@ -9,7 +9,7 @@ namespace HotelBooking.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string stringConnect = "server=localhost;user=root;password=h9AbR2Yd;database=hotelbooking";
+            string stringConnect = "server=localhost;user=*******;password=********;database=hotelbooking";
             optionsBuilder.UseMySql(stringConnect, ServerVersion.AutoDetect(stringConnect));
         }
     }
