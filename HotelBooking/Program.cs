@@ -1,9 +1,12 @@
 using HotelBooking.Models;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("HotelBooking");
 builder.Services.AddOpenApi();
-builder.Services.AddDbContext<HotelContext>();
+builder.Services.AddDbContext<HotelContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddControllers();
 
 var app = builder.Build();
