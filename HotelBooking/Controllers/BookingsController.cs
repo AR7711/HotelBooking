@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Models;
+using HotelBooking.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 namespace HotelBooking.Controllers
@@ -7,24 +8,24 @@ namespace HotelBooking.Controllers
     [Route("bookings")]
     public class BookingsController : ControllerBase
     {
-        private readonly HotelContext _db;
+        private readonly BookingService _bookingService;
 
-        public BookingsController(HotelContext db)
+        public BookingsController(BookingService bookingService)
         {
-            _db = db;
+            _bookingService = bookingService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _db.bookings.ToListAsync());
+            return Ok(await _bookingService.GetAllAsync());
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _db.bookings.FindAsync(id);
-            if (result == null)
+            var result = await _bookingService.GetByIdAsync(id);
+            if(result == null)
             {
                 return NotFound(new { message = $"Booking {id} was not found" });
             }
@@ -34,38 +35,28 @@ namespace HotelBooking.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Booking booking)
         {
-            _db.bookings.Add(booking);
-            await _db.SaveChangesAsync();
-            return Ok(booking);
+            return Ok(await _bookingService.CreateAsync(booking));
         }
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, Booking booking)
         {
-            var result = await _db.bookings.FindAsync(id);
+            var result = await _bookingService.UpdateAsync(id, booking);
             if (result == null)
             {
                 return NotFound(new { message = $"Booking {id} was not found" });
             }
-            result.GuestName = booking.GuestName;
-            result.CheckIn = booking.CheckIn;
-            result.CheckOut = booking.CheckOut;
-            result.PaymentMethod = booking.PaymentMethod;
-            result.RoomId = booking.RoomId;
-            await _db.SaveChangesAsync();
             return Ok(result);
         }
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _db.bookings.FindAsync(id);
+            var result = await _bookingService.DeleteAsync(id);
             if (result == null)
             {
                 return NotFound(new { message = $"Booking {id} was not found" });
             }
-            _db.bookings.Remove(result);
-            await _db.SaveChangesAsync();
             return Ok(result);
         }
     }
