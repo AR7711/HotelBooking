@@ -8,9 +8,9 @@ namespace HotelBooking.Controllers
     [Route("bookings")]
     public class BookingsController : ControllerBase
     {
-        private readonly BookingService _bookingService;
+        private readonly IBookingService _bookingService;
 
-        public BookingsController(BookingService bookingService)
+        public BookingsController(IBookingService bookingService)
         {
             _bookingService = bookingService;
         }
