@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotelBooking.Services
 {
-    public class RoomService
+    public class RoomService : IRoomService
     {
         private readonly HotelContext _db;
         public RoomService(HotelContext db)
