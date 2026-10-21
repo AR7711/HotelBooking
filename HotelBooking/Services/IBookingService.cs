@@ -6,8 +6,9 @@ namespace HotelBooking.Services
     {
         Task<List<Booking>> GetAllAsync();
         Task<Booking?> GetByIdAsync(int id);
-        Task<Booking> CreateAsync(Booking booking);
+        Task<Booking?> CreateAsync(Booking booking);
         Task<Booking?> UpdateAsync(int id, Booking booking);
         Task<Booking?> DeleteAsync(int id);
+        Task<bool> IsRoomBusyAsync(int roomId, DateTime сheckIn, DateTime сheckOut);
     }
 }

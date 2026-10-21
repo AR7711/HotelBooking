@@ -1,4 +1,5 @@
-﻿using HotelBooking.Models;
+﻿using HotelBooking.Dtos;
+using HotelBooking.Models;
 using HotelBooking.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,14 +34,28 @@ namespace HotelBooking.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Room room)
+        public async Task<IActionResult> Create(CreateRoomDto dto)
         {
+            var room = new Room
+            {
+                Number = dto.Number,
+                Type = dto.Type,
+                Capacity = dto.Capacity,
+                Price = dto.Price,
+            };
             return Ok(await _roomService.CreateAsync(room));
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, Room room)
+        public async Task<IActionResult> Update(int id, CreateRoomDto dto)
         {
+            var room = new Room
+            {
+                Number = dto.Number,
+                Type = dto.Type,
+                Capacity = dto.Capacity,
+                Price = dto.Price,
+            };
             var result = await _roomService.UpdateAsync(id, room);
             if (result == null)
             {

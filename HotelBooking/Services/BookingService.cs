@@ -18,8 +18,13 @@ namespace HotelBooking.Services
         {
             return await _db.bookings.FindAsync(id);
         }
-        public async Task<Booking> CreateAsync(Booking booking)
+        public async Task<Booking?> CreateAsync(Booking booking)
         {
+            bool result = await _db.bookings.AnyAsync(b => b.Id == b.RoomId);
+            if(!result)
+            {
+                return null;
+            }
             _db.bookings.Add(booking);
             await _db.SaveChangesAsync();
             return booking;
@@ -47,6 +52,12 @@ namespace HotelBooking.Services
             }
             _db.bookings.Remove(result);
             await _db.SaveChangesAsync();
+            return result;
+        }
+        public async Task<bool> IsRoomBusyAsync(int roomId, DateTime checkIn, DateTime checkOut)
+        {
+            var result = await _db.bookings.AnyAsync(b => b.RoomId == roomId &&
+            b.CheckIn < checkIn && b.CheckOut < checkOut);
             return result;
         }
     }

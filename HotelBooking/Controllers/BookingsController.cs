@@ -1,4 +1,5 @@
-﻿using HotelBooking.Models;
+﻿using HotelBooking.Dtos;
+using HotelBooking.Models;
 using HotelBooking.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,14 +34,43 @@ namespace HotelBooking.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Booking booking)
+        public async Task<IActionResult> Create(CreateBookingDto dto)
         {
-            return Ok(await _bookingService.CreateAsync(booking));
+            if(dto.CheckIn >= dto.CheckOut)
+            {
+                return BadRequest(new { message = "CheckOut must be after CheckIn" });
+            }
+            if(await _bookingService.IsRoomBusyAsync(dto.RoomId, dto.CheckIn, dto.CheckOut))
+            {
+                return Conflict(new {message = $"Room {dto.RoomId} is already booked for these dates" });
+            }
+            var booking = new Booking
+            {
+                GuestName = dto.GuestName,
+                CheckIn = dto.CheckIn,
+                CheckOut = dto.CheckOut,
+                PaymentMethod = dto.PaymentMethod,
+                RoomId = dto.RoomId
+            };
+            var result = await _bookingService.CreateAsync(booking);
+            if(result == null)
+            {
+                return NotFound(new { message = $"Booking {dto.RoomId} was not found" });
+            }
+            return Ok(result);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, Booking booking)
+        public async Task<IActionResult> Update(int id, CreateBookingDto dto)
         {
+            var booking = new Booking
+            {
+                GuestName = dto.GuestName,
+                CheckIn = dto.CheckIn,
+                CheckOut = dto.CheckOut,
+                PaymentMethod = dto.PaymentMethod,
+                RoomId = dto.RoomId
+            };
             var result = await _bookingService.UpdateAsync(id, booking);
             if (result == null)
             {
