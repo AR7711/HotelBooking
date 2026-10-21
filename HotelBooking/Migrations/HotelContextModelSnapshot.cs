@@ -52,6 +52,33 @@ namespace HotelBooking.Migrations
                     b.ToTable("bookings");
                 });
 
+            modelBuilder.Entity("HotelBooking.Models.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaidAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.ToTable("payments");
+                });
+
             modelBuilder.Entity("HotelBooking.Models.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -86,6 +113,22 @@ namespace HotelBooking.Migrations
                         .IsRequired();
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("HotelBooking.Models.Payment", b =>
+                {
+                    b.HasOne("HotelBooking.Models.Booking", "Booking")
+                        .WithMany("Payments")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+                });
+
+            modelBuilder.Entity("HotelBooking.Models.Booking", b =>
+                {
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("HotelBooking.Models.Room", b =>

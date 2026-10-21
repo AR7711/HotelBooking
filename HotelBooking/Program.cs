@@ -12,6 +12,7 @@ builder.Services.AddDbContext<HotelContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
