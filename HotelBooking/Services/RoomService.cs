@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBooking.Services
@@ -48,6 +49,10 @@ namespace HotelBooking.Services
             _db.rooms.Remove(result);
             await _db.SaveChangesAsync();
             return result;
+        }
+        public async Task<bool> IsRoomCreatedAsync(int roomNumber, int exceptRoomId = 0)
+        {
+            return await _db.rooms.AnyAsync(r => r.Number == roomNumber && r.Id != exceptRoomId);
         }
     }
 }

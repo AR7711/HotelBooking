@@ -6,7 +6,7 @@ namespace HotelBooking.Models
     {
         public int Id { get; set; }
         public int Number { get; set; }
-        public string? Type { get; set; }
+        public RoomType Type { get; set; }
         public int Capacity { get; set; }
         [Column (TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }

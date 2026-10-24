@@ -36,6 +36,11 @@ namespace HotelBooking.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateRoomDto dto)
         {
+            var result = await _roomService.IsRoomCreatedAsync(dto.Number);
+            if (result)
+            {
+                return Conflict(new { message = $"The room {dto.Number} already exists" });
+            }
             var room = new Room
             {
                 Number = dto.Number,
@@ -49,6 +54,11 @@ namespace HotelBooking.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, CreateRoomDto dto)
         {
+            var secRes = await _roomService.IsRoomCreatedAsync(dto.Number, id);
+            if (secRes)
+            {
+                return Conflict(new { message = $"The room {dto.Number} already exists" });
+            }
             var room = new Room
             {
                 Number = dto.Number,

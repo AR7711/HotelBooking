@@ -54,10 +54,10 @@ namespace HotelBooking.Services
             await _db.SaveChangesAsync();
             return result;
         }
-        public async Task<bool> IsRoomBusyAsync(int roomId, DateTime checkIn, DateTime checkOut)
+        public async Task<bool> IsRoomBusyAsync(int roomId, DateTime checkIn, DateTime checkOut, int exceptBookingId)
         {
             var result = await _db.bookings.AnyAsync(b => b.RoomId == roomId &&
-            b.CheckIn < checkIn && b.CheckOut < checkOut);
+            b.Id != exceptBookingId && b.CheckIn < checkOut && b.CheckOut < checkIn);
             return result;
         }
     }
