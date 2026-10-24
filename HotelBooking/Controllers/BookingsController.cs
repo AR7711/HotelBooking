@@ -55,7 +55,7 @@ namespace HotelBooking.Controllers
             var result = await _bookingService.CreateAsync(booking);
             if(result == null)
             {
-                return NotFound(new { message = $"Booking {dto.RoomId} was not found" });
+                return NotFound(new { message = $"Room {dto.RoomId} was not found" });
             }
             return Ok(result);
         }
@@ -63,6 +63,14 @@ namespace HotelBooking.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, CreateBookingDto dto)
         {
+            if(dto.CheckIn >= dto.CheckOut)
+            {
+                return BadRequest(new { message = "CheckOut must be after CheckIn" });
+            }
+            if(await _bookingService.IsRoomBusyAsync(dto.RoomId, dto.CheckIn, dto.CheckOut))
+            {
+                return Conflict(new { message = $"Room {dto.RoomId} is already booked for these dates" });
+            }
             var booking = new Booking
             {
                 GuestName = dto.GuestName,
