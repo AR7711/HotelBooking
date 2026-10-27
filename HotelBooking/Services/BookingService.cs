@@ -20,8 +20,8 @@ namespace HotelBooking.Services
         }
         public async Task<Booking?> CreateAsync(Booking booking)
         {
-            bool result = await _db.bookings.AnyAsync(b => b.Id == b.RoomId);
-            if(!result)
+            bool result = await _db.rooms.AnyAsync(r => r.Id == booking.RoomId);
+            if (!result)
             {
                 return null;
             }

@@ -77,6 +77,11 @@ namespace HotelBooking.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
+            var secRes = await _roomService.IsRoomHaveBooking(id);
+            if (secRes)
+            {
+                return Conflict(new { message = $"This room has booking" });
+            }
             var result = await _roomService.DeleteAsync(id);
             if (result == null)
             {

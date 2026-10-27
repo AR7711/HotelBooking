@@ -109,7 +109,7 @@ namespace HotelBooking.Migrations
                     b.HasOne("HotelBooking.Models.Room", "Room")
                         .WithMany("Bookings")
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Room");

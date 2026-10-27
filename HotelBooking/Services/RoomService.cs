@@ -54,5 +54,9 @@ namespace HotelBooking.Services
         {
             return await _db.rooms.AnyAsync(r => r.Number == roomNumber && r.Id != exceptRoomId);
         }
+        public async Task<bool> IsRoomHaveBooking(int bookingNumber)
+        {
+            return await _db.bookings.AnyAsync(b => b.RoomId == bookingNumber);
+        }
     }
 }
