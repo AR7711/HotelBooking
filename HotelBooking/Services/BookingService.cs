@@ -32,7 +32,7 @@ namespace HotelBooking.Services
         public async Task<Booking?> UpdateAsync(int id, Booking booking)
         {
             var result = await _db.bookings.FindAsync(id);
-            if(result == null)
+            if (result == null)
             {
                 return null;
             }
@@ -40,13 +40,14 @@ namespace HotelBooking.Services
             result.CheckIn = booking.CheckIn;
             result.CheckOut = booking.CheckOut;
             result.PaymentMethod = booking.PaymentMethod;
+            result.RoomId = booking.RoomId;
             await _db.SaveChangesAsync();
             return result;
         }
         public async Task<Booking?> DeleteAsync(int id)
         {
             var result = await _db.bookings.FindAsync(id);
-            if(result == null)
+            if (result == null)
             {
                 return null;
             }
@@ -57,8 +58,14 @@ namespace HotelBooking.Services
         public async Task<bool> IsRoomBusyAsync(int roomId, DateTime checkIn, DateTime checkOut, int exceptBookingId)
         {
             var result = await _db.bookings.AnyAsync(b => b.RoomId == roomId &&
-            b.Id != exceptBookingId && b.CheckIn < checkOut && b.CheckOut < checkIn);
+            b.Id != exceptBookingId && b.CheckIn < checkOut && checkIn < b.CheckOut);   // <- было: b.CheckOut < checkIn
             return result;
         }
+        public async Task<bool> IsRoomExistsAsync(int roomId)
+        {
+            bool result = await _db.rooms.AnyAsync(b => b.Id == roomId);
+            return result;
+        }
+        
     }
 }

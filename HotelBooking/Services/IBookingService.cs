@@ -10,5 +10,6 @@ namespace HotelBooking.Services
         Task<Booking?> UpdateAsync(int id, Booking booking);
         Task<Booking?> DeleteAsync(int id);
         Task<bool> IsRoomBusyAsync(int roomId, DateTime сheckIn, DateTime сheckOut, int exceptBookingId = 0);
+        Task<bool> IsRoomExistsAsync(int roomId);
     }
 }

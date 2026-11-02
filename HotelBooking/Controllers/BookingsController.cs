@@ -44,6 +44,12 @@ namespace HotelBooking.Controllers
             {
                 return Conflict(new {message = $"Room {dto.RoomId} is already booked for these dates" });
             }
+            TimeSpan minus = dto.CheckOut - dto.CheckIn;
+            int newMinus = minus.Days;
+            if(newMinus > 30)
+            {
+                return BadRequest(new { message = "Booking cannot be longer than 30 nights" });
+            }
             var booking = new Booking
             {
                 GuestName = dto.GuestName,
@@ -63,13 +69,23 @@ namespace HotelBooking.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, CreateBookingDto dto)
         {
-            if(dto.CheckIn >= dto.CheckOut)
+            if(!await _bookingService.IsRoomExistsAsync(dto.RoomId))
+            {
+                return NotFound(new { message = "Room was not found" });
+            }
+            if (dto.CheckIn >= dto.CheckOut)
             {
                 return BadRequest(new { message = "CheckOut must be after CheckIn" });
             }
-            if(await _bookingService.IsRoomBusyAsync(dto.RoomId, dto.CheckIn, dto.CheckOut))
+            if(await _bookingService.IsRoomBusyAsync(dto.RoomId, dto.CheckIn, dto.CheckOut, id))
             {
                 return Conflict(new { message = $"Room {dto.RoomId} is already booked for these dates" });
+            }
+            TimeSpan wait = dto.CheckOut - dto.CheckIn;
+            int newWait = wait.Days;
+            if(newWait > 30)
+            {
+                return BadRequest(new { message = "Booking cannot be longer than 30 nights" });
             }
             var booking = new Booking
             {
@@ -78,8 +94,7 @@ namespace HotelBooking.Controllers
                 CheckOut = dto.CheckOut,
                 PaymentMethod = dto.PaymentMethod,
                 RoomId = dto.RoomId
-            };
-            var result = await _bookingService.UpdateAsync(id, booking);
+            };           var result = await _bookingService.UpdateAsync(id, booking);
             if (result == null)
             {
                 return NotFound(new { message = $"Booking {id} was not found" });
