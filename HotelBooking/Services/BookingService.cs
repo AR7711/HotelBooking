@@ -55,10 +55,10 @@ namespace HotelBooking.Services
             await _db.SaveChangesAsync();
             return result;
         }
-        public async Task<bool> IsRoomBusyAsync(int roomId, DateTime checkIn, DateTime checkOut, int exceptBookingId)
+        public async Task<bool> IsRoomBusyAsync(int roomId, DateTime checkIn, DateTime checkOut, int exceptBookingId)  
         {
             var result = await _db.bookings.AnyAsync(b => b.RoomId == roomId &&
-            b.Id != exceptBookingId && b.CheckIn < checkOut && checkIn < b.CheckOut);   // <- было: b.CheckOut < checkIn
+            b.Id != exceptBookingId && b.CheckIn < checkOut && checkIn < b.CheckOut);
             return result;
         }
         public async Task<bool> IsRoomExistsAsync(int roomId)
