@@ -33,5 +33,21 @@ namespace HotelBooking.Services
         {
             return await _db.payments.Where(b => b.BookingId == bookingId).ToListAsync();
         }
+        public async Task<decimal?> GetBookingTotalAsync(int bookingId)
+        {
+            var result = await _db.bookings.AsNoTracking().Include(r => r.Room).FirstOrDefaultAsync(r => r.Id == bookingId);
+            if(result == null)
+            {
+                return null;
+            }
+            TimeSpan day = result.CheckOut - result.CheckIn;
+            int newDay = day.Days;
+            return newDay * result.Room!.Price;
+        }
+        public async Task<bool> IsBookingHavePaymentAsync(int bookingId)
+        {
+            var result = await _db.bookings.AnyAsync(b => b.Id == bookingId);
+            return result;
+        }
     }
 }
