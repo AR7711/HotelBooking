@@ -11,5 +11,6 @@ namespace HotelBooking.Services
         Task<Booking?> DeleteAsync(int id);
         Task<bool> IsRoomBusyAsync(int roomId, DateTime checkIn, DateTime checkOut, int exceptBookingId = 0);
         Task<bool> IsRoomExistsAsync(int roomId);
+        Task<bool> IsPaymentExistsAsync(int bookingId);
     }
 }

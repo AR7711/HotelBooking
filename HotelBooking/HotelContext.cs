@@ -13,11 +13,17 @@ namespace HotelBooking.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Booking>()            
-                .HasOne(b => b.Room)                  
-                .WithMany(r => r.Bookings)            
-                .HasForeignKey(b => b.RoomId)         
-                .OnDelete(DeleteBehavior.Restrict);   
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.Room)
+                .WithMany(r => r.Bookings)
+                .HasForeignKey(b => b.RoomId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.Booking)
+                .WithMany(b => b.Payments)
+                .HasForeignKey(p => p.BookingId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

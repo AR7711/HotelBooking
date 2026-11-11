@@ -46,7 +46,7 @@ namespace HotelBooking.Services
         }
         public async Task<bool> IsBookingHavePaymentAsync(int bookingId)
         {
-            var result = await _db.bookings.AnyAsync(b => b.Id == bookingId);
+            var result = await _db.payments.AnyAsync(b => b.BookingId == bookingId && b.Status == PaymentStatus.Paid);
             return result;
         }
     }

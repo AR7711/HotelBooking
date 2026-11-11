@@ -66,6 +66,10 @@ namespace HotelBooking.Services
             bool result = await _db.rooms.AnyAsync(b => b.Id == roomId);
             return result;
         }
-
+        public async Task<bool> IsPaymentExistsAsync(int bookingId)
+        {
+            var result = await _db.payments.AnyAsync(p => p.BookingId == bookingId);
+            return result;
+        }
     }
 }

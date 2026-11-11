@@ -40,6 +40,10 @@ namespace HotelBooking.Controllers
             {
                 return BadRequest(new { message = "CheckOut must be after CheckIn" });
             }
+            if(dto.CheckIn < DateTime.Today)
+            {
+                return BadRequest(new { message = "You can't book for previous dates" });
+            }
             if(await _bookingService.IsRoomBusyAsync(dto.RoomId, dto.CheckIn, dto.CheckOut))
             {
                 return Conflict(new {message = $"Room {dto.RoomId} is already booked for these dates" });
@@ -77,7 +81,11 @@ namespace HotelBooking.Controllers
             {
                 return BadRequest(new { message = "CheckOut must be after CheckIn" });
             }
-            if(await _bookingService.IsRoomBusyAsync(dto.RoomId, dto.CheckIn, dto.CheckOut, id))
+            if (dto.CheckIn < DateTime.Today)
+            {
+                return BadRequest(new { message = "You can't book for previous dates" });
+            }
+            if (await _bookingService.IsRoomBusyAsync(dto.RoomId, dto.CheckIn, dto.CheckOut, id))
             {
                 return Conflict(new { message = $"Room {dto.RoomId} is already booked for these dates" });
             }
@@ -105,6 +113,11 @@ namespace HotelBooking.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
+            var secRes = await _bookingService.IsPaymentExistsAsync(id);
+            if (secRes)
+            {
+                return Conflict(new { message = $"Booking {id} has payments and cannot be deleted" });
+            }
             var result = await _bookingService.DeleteAsync(id);
             if (result == null)
             {
