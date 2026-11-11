@@ -39,7 +39,6 @@ namespace HotelBooking.Services
             result.GuestName = booking.GuestName;
             result.CheckIn = booking.CheckIn;
             result.CheckOut = booking.CheckOut;
-            result.PaymentMethod = booking.PaymentMethod;
             result.RoomId = booking.RoomId;
             await _db.SaveChangesAsync();
             return result;

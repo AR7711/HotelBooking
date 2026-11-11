@@ -6,7 +6,6 @@
         public string? GuestName { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
-        public string? PaymentMethod { get; set; }
         public int RoomId { get; set; }
         public Room? Room { get; set; }
         public List<Payment> Payments { get; set; } = new List<Payment>();

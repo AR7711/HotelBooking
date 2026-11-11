@@ -59,7 +59,6 @@ namespace HotelBooking.Controllers
                 GuestName = dto.GuestName,
                 CheckIn = dto.CheckIn,
                 CheckOut = dto.CheckOut,
-                PaymentMethod = dto.PaymentMethod,
                 RoomId = dto.RoomId
             };
             var result = await _bookingService.CreateAsync(booking);
@@ -100,7 +99,6 @@ namespace HotelBooking.Controllers
                 GuestName = dto.GuestName,
                 CheckIn = dto.CheckIn,
                 CheckOut = dto.CheckOut,
-                PaymentMethod = dto.PaymentMethod,
                 RoomId = dto.RoomId
             };           var result = await _bookingService.UpdateAsync(id, booking);
             if (result == null)

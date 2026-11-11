@@ -50,6 +50,7 @@ namespace HotelBooking.Controllers
             var payment = new Payment
             {
                 Amount = dto.Amount,
+                Method = dto.Method,
                 Status = dto.Status,
                 BookingId = dto.BookingId,
             };

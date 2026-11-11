@@ -39,9 +39,6 @@ namespace HotelBooking.Migrations
                     b.Property<string>("GuestName")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("PaymentMethod")
-                        .HasColumnType("longtext");
-
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
@@ -64,6 +61,9 @@ namespace HotelBooking.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Method")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PaidAt")
