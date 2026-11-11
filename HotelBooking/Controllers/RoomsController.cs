@@ -80,7 +80,7 @@ namespace HotelBooking.Controllers
             var secRes = await _roomService.IsRoomHaveBooking(id);
             if (secRes)
             {
-                return Conflict(new { message = $"This room has booking" });
+                return Conflict(new { message = "This room has bookings and cannot be deleted" });
             }
             var result = await _roomService.DeleteAsync(id);
             if (result == null)

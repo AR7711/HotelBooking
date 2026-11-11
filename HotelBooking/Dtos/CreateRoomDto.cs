@@ -7,9 +7,9 @@ namespace HotelBooking.Dtos
     {
         [Range(1, 9999, ErrorMessage = "Number must be greater than 0")]
         public int Number { get; set; }
-        [EnumDataType(typeof(RoomType), ErrorMessage = "Type must be Standart, Deluxe or Luxury")]
+        [EnumDataType(typeof(RoomType), ErrorMessage = "Type must be Standard, Deluxe or Luxury")]
         public RoomType Type { get; set; }
-        [Range(1, 10, ErrorMessage = "Capacity must be between 1 -10")]
+        [Range(1, 10, ErrorMessage = "Capacity must be between 1 and 10")]
         public int Capacity { get; set; }
         [Range(0.01, int.MaxValue, ErrorMessage = "Price must be greater than 0")]
         public decimal Price { get; set; }

@@ -11,7 +11,7 @@ namespace HotelBooking.Dtos
         public PaymentMethod Method { get; set; }
         [EnumDataType(typeof(PaymentStatus), ErrorMessage = "Status must be Paid, Failed or Refunded")]
         public PaymentStatus Status { get; set; }
-        [Range(1, int.MaxValue, ErrorMessage = "Amount must be greater than 0")]
+        [Range(1, int.MaxValue, ErrorMessage = "BookingId must be greater than 0")]
         public int BookingId { get; set; }
 
     }

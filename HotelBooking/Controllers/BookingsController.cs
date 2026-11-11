@@ -46,7 +46,7 @@ namespace HotelBooking.Controllers
             }
             if(await _bookingService.IsRoomBusyAsync(dto.RoomId, dto.CheckIn, dto.CheckOut))
             {
-                return Conflict(new {message = $"Room {dto.RoomId} is already booked for these dates" });
+                return Conflict(new { message = "This room is already booked for these dates" });
             }
             TimeSpan minus = dto.CheckOut - dto.CheckIn;
             int newMinus = minus.Days;
@@ -74,7 +74,7 @@ namespace HotelBooking.Controllers
         {
             if(!await _bookingService.IsRoomExistsAsync(dto.RoomId))
             {
-                return NotFound(new { message = "Room was not found" });
+                return NotFound(new { message = $"Room {dto.RoomId} was not found" });
             }
             if (dto.CheckIn >= dto.CheckOut)
             {
@@ -86,7 +86,7 @@ namespace HotelBooking.Controllers
             }
             if (await _bookingService.IsRoomBusyAsync(dto.RoomId, dto.CheckIn, dto.CheckOut, id))
             {
-                return Conflict(new { message = $"Room {dto.RoomId} is already booked for these dates" });
+                return Conflict(new { message = "This room is already booked for these dates" });
             }
             TimeSpan wait = dto.CheckOut - dto.CheckIn;
             int newWait = wait.Days;
