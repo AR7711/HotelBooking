@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace HotelBooking.Models
 {
@@ -11,6 +12,7 @@ namespace HotelBooking.Models
         public DateTime PaidAt { get; set; }
         public PaymentStatus Status { get; set; }
         public int BookingId { get; set; }
+        [JsonIgnore]
         public Booking? Booking { get; set; }
     }
 }

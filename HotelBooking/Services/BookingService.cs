@@ -12,7 +12,7 @@ namespace HotelBooking.Services
         }
         public async Task<List<Booking>> GetAllAsync()
         {
-            return await _db.bookings.ToListAsync();
+            return await _db.bookings.AsNoTracking().Include(p => p.Payments).ToListAsync();
         }
         public async Task<Booking?> GetByIdAsync(int id)
         {
