@@ -104,33 +104,6 @@ namespace HotelBooking.Migrations
                     b.ToTable("rooms");
                 });
 
-            modelBuilder.Entity("HotelBooking.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("users");
-                });
-
             modelBuilder.Entity("HotelBooking.Models.Booking", b =>
                 {
                     b.HasOne("HotelBooking.Models.Room", "Room")
