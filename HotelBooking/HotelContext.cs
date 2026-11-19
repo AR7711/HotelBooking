@@ -8,6 +8,7 @@ namespace HotelBooking.Models
         public DbSet<Room> rooms { get; set; } = null!;
         public DbSet<Booking> bookings { get; set; } = null!;
         public DbSet<Payment> payments { get; set; } = null!;
+        public DbSet<User> users { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +25,7 @@ namespace HotelBooking.Models
                 .WithMany(b => b.Payments)
                 .HasForeignKey(p => p.BookingId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         }
     }
 }
